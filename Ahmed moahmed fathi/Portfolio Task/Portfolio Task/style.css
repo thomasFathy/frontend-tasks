@@ -1,0 +1,43 @@
+*{
+    width: 98%;
+    margin: auto;
+    /*padding: 0;*/
+
+}
+body{
+border: solid black 2px;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.nav{
+    border: solid black 2px;
+    margin: 20px auto;
+        padding: 10px 0;
+
+}
+.nav ul{
+    display: flex;
+  justify-content: flex-start;
+    list-style-type: none;
+
+}
+li {
+   text-align: center;
+}
+.landscape{
+      border: solid black 2px;
+      margin: 20px auto;
+          padding: 10px 0;
+}
+.about{
+    display: flex;
+    padding: 10px 0;
+}
+.footer{
+      border: solid black 2px;
+           margin: 20px auto;
+        text-align: center;
+        padding: 10px 0;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+
+  function createElement(tag, text = "", styles = {}) {
+    const el = document.createElement(tag);
+    if (text) el.textContent = text;
+    Object.assign(el.style, styles);
+    document.body.appendChild(el);
+    return el;
+  }
+
+  function createButton(text, onClick) {
+    return createElement("button", text, {
+      margin: "5px",
+      padding: "8px",
+      cursor: "pointer"
+    }).onclick = onClick;
+  }
+
+  function createInput(placeholder) {
+    const input = createElement("input", "", {
+      margin: "5px",
+      padding: "5px",
+      width: "200px"
+    });
+    input.placeholder = placeholder;
+    return input;
+  }
+
+
+  const output = createElement("pre", "", {
+    border: "1px solid black",
+    padding: "10px",
+    width: "450px",
+    height: "220px",
+    overflow: "auto",
+    marginTop: "15px",
+    whiteSpace: "pre-wrap"
+  });
+
+  const idInput = createInput("Post ID (default 1)");
+  const titleInput = createInput("Title");
+  const bodyInput = createInput("Body");
+  const userIdInput = createInput("User ID");
+
+
+
+  function request(method, url, data = null) {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+
+    if (data) {
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+
+    output.textContent = "Loading...";
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        output.textContent =
+          "Status: " + xhr.status + "\n\n" +
+          (xhr.responseText ? xhr.responseText : "No Content");
+      }
+    };
+
+    xhr.send(data ? JSON.stringify(data) : null);
+  }
+
+
+  createButton("GET Post", () => {
+    const id = idInput.value || 1;
+    request("GET", "https://jsonplaceholder.typicode.com/posts/" + id);
+  });
+
+  createButton("POST Create", () => {
+    request("POST", "https://jsonplaceholder.typicode.com/posts", {
+      title: titleInput.value || "Default Title",
+      body: bodyInput.value || "Default Body",
+      userId: userIdInput.value || 1
+    });
+  });
+
+  createButton("PUT Update", () => {
+    const id = idInput.value || 1;
+    request("PUT", "https://jsonplaceholder.typicode.com/posts/" + id, {
+      id: id,
+      title: titleInput.value || "Updated Title",
+      body: bodyInput.value || "Updated Body",
+      userId: userIdInput.value || 1
+    });
+  });
+
+  createButton("DELETE Post", () => {
+    const id = idInput.value || 1;
+    request("DELETE", "https://jsonplaceholder.typicode.com/posts/" + id);
+  });
+</script>
+</body>
+</html>
