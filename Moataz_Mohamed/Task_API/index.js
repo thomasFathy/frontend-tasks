@@ -89,7 +89,7 @@ container.appendChild(table);
 
 const thead = document.createElement("thead");
 thead.innerHTML = `
-<tr style="background:#4a90e2; color:white;">
+<tr style="background:#4a90e2; color:white; text-align:center;">
   <th style="padding:10px;">ID</th>
   <th>Name</th>
   <th>Age</th>
@@ -103,12 +103,16 @@ const tbody = document.createElement("tbody");
 table.appendChild(tbody);
 
 const API_URL = "https://jsonplaceholder.typicode.com/users"; 
+let employees = [];
 let editId = null;
 
+//  GET 
 function fetchEmployees() {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(data => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", API_URL);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
       employees = data.map(user => ({
         id: user.id,
         name: user.name,
@@ -117,15 +121,70 @@ function fetchEmployees() {
         department: ["HR","IT","Finance","Marketing"][Math.floor(Math.random()*4)]
       }));
       renderTable();
-    })
-    .catch(err => console.error(err));
+    }
+  };
+  xhr.send();
 }
 
+//  POST 
+function createEmployee(emp) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", API_URL);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.onload = function () {
+    if (xhr.status === 201 || xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
+      emp.id = data.id;
+      employees.push(emp);
+      clearForm();
+      renderTable();
+    }
+  };
+
+  xhr.send(JSON.stringify(emp));
+}
+
+//  PUT 
+function updateEmployee(id, emp) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("PUT", `${API_URL}/${id}`);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      const updated = employees.find(e => e.id === id);
+      Object.assign(updated, emp);
+      clearForm();
+      renderTable();
+    }
+  };
+
+  xhr.send(JSON.stringify(emp));
+}
+
+//  DELETE 
+function deleteEmployee(id) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("DELETE", `${API_URL}/${id}`);
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      employees = employees.filter(e => e.id !== id);
+      renderTable();
+    }
+  };
+
+  xhr.send();
+}
+
+//  Render Table 
 function renderTable() {
   tbody.innerHTML = "";
   employees.forEach(emp => {
     const tr = document.createElement("tr");
     tr.style.textAlign = "center";
+    
     tr.innerHTML = `
       <td>${emp.id}</td>
       <td>${emp.name}</td>
@@ -133,13 +192,14 @@ function renderTable() {
       <td>${emp.salary}</td>
       <td>${emp.department}</td>
       <td>
-        <button style="background:#ffa726;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;margin-right:5px;">Update</button>
-        <button style="background:#e53935;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Delete</button>
+        <button class="updateBtn" style="background:#ffa726;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;margin-right:5px;">Update</button>
+        <button class="deleteBtn" style="background:#e53935;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Delete</button>
       </td>
     `;
+
     tbody.appendChild(tr);
 
-    tr.querySelector("button:nth-child(1)").onclick = () => {
+    tr.querySelector(".updateBtn").onclick = () => {
       nameInput.value = emp.name;
       ageInput.value = emp.age;
       salaryInput.value = emp.salary;
@@ -147,16 +207,13 @@ function renderTable() {
       editId = emp.id;
     };
 
-    tr.querySelector("button:nth-child(2)").onclick = () => {
-      fetch(`${API_URL}/${emp.id}`, { method: "DELETE" })
-        .then(() => {
-          employees = employees.filter(e => e.id !== emp.id);
-          renderTable();
-        });
+    tr.querySelector(".deleteBtn").onclick = () => {
+      deleteEmployee(emp.id);
     };
   });
 }
 
+//  Add / Update Button 
 addBtn.onclick = () => {
   const name = nameInput.value.trim();
   const age = ageInput.value.trim();
@@ -168,34 +225,12 @@ addBtn.onclick = () => {
     return;
   }
 
-  const newEmployee = { name, age, salary, department };
+  const emp = { name, age, salary, department };
 
   if (editId) {
-    fetch(`${API_URL}/${editId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newEmployee)
-    })
-      .then(res => res.json())
-      .then(data => {
-        const emp = employees.find(e => e.id === editId);
-        Object.assign(emp, newEmployee);
-        clearForm();
-        renderTable();
-      });
+    updateEmployee(editId, emp);
   } else {
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newEmployee)
-    })
-      .then(res => res.json())
-      .then(data => {
-        newEmployee.id = data.id; 
-        employees.push(newEmployee);
-        clearForm();
-        renderTable();
-      });
+    createEmployee(emp);
   }
 };
 
