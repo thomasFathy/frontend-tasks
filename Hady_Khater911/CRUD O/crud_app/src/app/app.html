@@ -1,0 +1,227 @@
+<div class="row">
+  <div class="col-12" *ngIf="!isNewUser">
+    <div class="card">
+      <div class="card-header bg-warning">
+        <div class="row">
+          <div class="col-6">
+            <h6>User List</h6>
+          </div>
+          <div class="col-6 text-end">
+            <button class="btn btn-success" (click)="changeView()">Add New User</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- @for (item of items; track $index) { -->
+          <div class="col-3" *ngFor="let item of userList; let i = index">
+            <div class="card" style="width: 18rem">
+              <div class="card-body">
+                <h5 class="card-title">{{ item.fName }} {{ item.lName }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{ item.uName }}</h6>
+                <p class="card-text">{{ item.city }} {{ item.state }} {{ item.zipCode }}</p>
+                <a class="card-link text-succes" (click)="onEdit(item)">Edit</a>
+                <a class="card-link text-danger" (click)="onDelete(item.userId)">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="isNewUser">
+    <div class="card">
+      <div class="card-header bg-warning">
+        <div class="row">
+          <div class="col-6">
+            <h6>New User</h6>
+          </div>
+          <div class="col-6 text-end">
+            <button class="btn btn-success" (click)="changeView()">List View</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <form class="row g-3" #userForm="ngForm" novalidate>
+          <div class="col-md-4">
+            <label for="validationServer01" class="form-label">First name</label>
+            <input
+              type="text"
+              name="fName"
+              [(ngModel)]="userObj.fName"
+              #fName="ngModel"
+              [ngClass]="{
+                'is-invalid': fName.invalid && fName.touched,
+                'is-valid': fName.valid && fName.touched
+              }"
+              class="form-control is-valid"
+              id="validationServer01"
+              value="Mark"
+              required
+            />
+            <div class="invalid-feedback" *ngIf="fName.invalid && fName.touched">
+              First Name is required.
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="validationServer02" class="form-label">Last name</label>
+            <input
+              type="text"
+              name="lName"
+              #lName="ngModel"
+              [ngClass]="{
+                'is-invalid': lName.invalid && lName.touched,
+                'is-valid': lName.valid && lName.touched
+              }"
+              [(ngModel)]="userObj.lName"
+              class="form-control is-valid"
+              id="validationServer02"
+              value="Otto"
+              required
+            />
+            <div class="invalid-feedback" *ngIf="lName.invalid && lName.touched">
+              Last Name is required.
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="validationServerUsername" class="form-label">Username</label>
+            <div class="input-group has-validation">
+              <span class="input-group-text" id="inputGroupPrepend3">@</span>
+              <input
+                type="text"
+                name="username"
+                [(ngModel)]="userObj.uName"
+                #username="ngModel"
+                [ngClass]="{
+                  'is-invalid': username.invalid && username.touched,
+                  'is-valid': username.valid && username.touched
+                }"
+                class="form-control is-invalid"
+                id="validationServerUsername"
+                aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback"
+                required
+              />
+              <div class="invalid-feedback" *ngIf="username.invalid && username.touched">
+                Please choose a username.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="validationServer03" class="form-label">City</label>
+            <input
+              type="text"
+              name="city"
+              #city="ngModel"
+              [(ngModel)]="userObj.city"
+              [ngClass]="{
+                'is-invalid': city.invalid && city.touched,
+                'is-valid': city.valid && city.touched
+              }"
+              class="form-control is-invalid"
+              id="validationServer03"
+              aria-describedby="validationServer03Feedback"
+              required
+            />
+            <div class="invalid-feedback" *ngIf="city.invalid && city.touched">
+              City is required.
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="validationServer04" class="form-label">State</label>
+            <select
+              [(ngModel)]="userObj.state"
+              #state="ngModel"
+              [ngClass]="{
+                'is-invalid': state.invalid && state.touched,
+                'is-valid': state.valid && state.touched
+              }"
+              name="state"
+              class="form-select is-invalid"
+              id="validationServer04"
+              aria-describedby="validationServer04Feedback"
+              required
+            >
+              <option selected disabled value="">Choose State</option>
+              <option>Hady</option>
+              <option>Ahmed</option>
+              <option>Ali</option>
+              <option>Abdul</option>
+            </select>
+            <div id="validationServer04Feedback" class="invalid-feedback">
+              Please select a valid state.
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="validationServer05" class="form-label">Zip</label>
+            <input
+              type="text"
+              #zipCode="ngModel"
+              [(ngModel)]="userObj.zipCode"
+              [ngClass]="{
+                'is-invalid': zipCode.invalid && zipCode.touched,
+                'is-valid': zipCode.valid && zipCode.touched
+              }"
+              name="zipCode"
+              class="form-control is-invalid"
+              id="validationServer05"
+              aria-describedby="validationServer05Feedback"
+              required
+            />
+            <div id="validationServer05Feedback" class="invalid-feedback">
+              Please enter a valid zip code.
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-check">
+              <input
+                [(ngModel)]="userObj.isAgree"
+                name="isAgree"
+                #isAgree="ngModel"
+                [ngClass]="{
+                  'is-invalid': isAgree.invalid && isAgree.touched,
+                  'is-valid': isAgree.valid && isAgree.touched
+                }"
+                class="form-check-input is-invalid"
+                type="checkbox"
+                value="true"
+                id="invalidCheck3"
+                aria-describedby="invalidCheck3Feedback"
+                required
+              />
+              <label class="form-check-label" for="invalidCheck3">
+                Agree to terms and conditions
+              </label>
+              <div class="invalid-feedback" *ngIf="isAgree.invalid && isAgree.touched">
+                You must agree before submitting.
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <!-- {{ userObj.userId }} -->
+            <button
+              *ngIf="userObj.userId === 0"
+              class="btn btn-primary"
+              type="button"
+              [disabled]="userForm.invalid"
+              (click)="onSave()"
+              onmouseleave=""
+            >
+              Save User
+            </button>
+            <button
+              *ngIf="userObj.userId !== 0"
+              class="btn btn-warning"
+              type="button"
+              [disabled]="userForm.invalid"
+              (click)="onUpdate()"
+              onmouseleave=""
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
