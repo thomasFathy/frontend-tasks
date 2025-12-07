@@ -1,0 +1,31 @@
+header{
+    display:flex;
+    padding-inline: 16px;
+    padding-block: 8px;
+    background-color: #333;
+    color:white;
+    justify-content: space-between;
+    align-items: center;
+    width: 975px;
+    
+    span{
+        cursor: pointer;
+        &:hover{
+                    color:rgba(0, 0, 0, 0.524);
+                }
+    }
+    nav{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 99.9999%;
+        ul{
+            list-style: none;
+            cursor: pointer;
+            &:hover{
+                    color:rgba(0, 0, 0, 0.524);
+            }
+        };
+    
+    }
+}

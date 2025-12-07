@@ -1,0 +1,237 @@
+/* --- Global Resets & Variables --- */
+:root {
+    /* Define a color palette using CSS variables for easy updates */
+    --primary-color: #00ADB5; /* A bright accent color (Teal) */
+    --secondary-color: #393E46; /* Card background/Footer color */
+    --background-color: #222831; /* Main dark background */
+    --text-color: #EEEEEE; /* Light text color */
+    --font-stack: 'Inter', sans-serif;
+}
+
+/* Basic Reset to ensure consistency across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+header {
+    background-color: var(--secondary-color);
+    position: fixed; /* Stays at the top when scrolling */
+    width: 88%;
+    top: 0;
+    z-index: 1000;
+    padding: 20px 10%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.logo:hover{
+
+    color: var(--text-color);
+}
+
+nav ul {
+    display: flex; /* Aligns menu items horizontally */
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: var(--text-color);
+    color: #00ADB5;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+/* Base styles for the entire body */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    line-height: 1.6; /* Improves readability */
+    scroll-behavior: smooth; /* Smooth scrolling when clicking anchor links */
+}
+
+ul {
+    list-style: none; /* Removes default bullet points from lists */
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+a:hover {
+    color: var(--text-color);
+}
+
+/* Global padding for all sections */
+section {
+    padding: 100px 10%; /* Top/Bottom padding, Left/Right padding */
+}
+
+h1, h2, h3 {
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+    margin-bottom: 40px;
+}
+
+/* --- Navigation Bar Styling --- */
+header {
+    background-color: var(--secondary-color);
+    position: fixed; /* Stays at the top when scrolling */
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    padding: 20px 10%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+nav ul {
+    display: flex; /* Aligns menu items horizontally */
+}
+
+nav ul li {
+    margin-left: 25px;
+}
+
+nav ul li a {
+    color: var(--text-color);
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Hero Section Styling --- */
+#hero {
+    display: flex;
+    align-items: center;
+    min-height: 100vh; /* Takes up the full height of the viewport */
+    padding-top: 80px; /* Offset for fixed header */
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    color: var(--text-color);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #A9A9A9;
+}
+
+.cta-button {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #008C9E;
+    color: var(--background-color);
+}
+
+/* --- About & Skills & Contact Styling (List items) --- */
+
+.contact-list li, .skills-list li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+/* Simple bullet points using CSS pseudo-elements */
+.contact-list li::before, .skills-list li::before {
+    content: '•';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+/* --- Projects Section Styling --- */
+.project-grid {
+    display: grid;
+    /* Creates responsive grid columns that adjust based on available space */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect on hover */
+}
+
+/* --- Footer Styling --- */
+footer {
+    background-color: var(--secondary-color);
+    text-align: center;
+    padding: 20px 10%;
+    font-size: 0.9rem;
+    color: #A9A9A9;
+
+    position: fixed; /* 1. Fixes the element relative to the viewport */
+    bottom: 0;      /* 2. Aligns the bottom edge of the element to the bottom of the viewport */
+    left: 0;        /* 3. Aligns the left edge to the left of the viewport */
+    width: 100%;
+}
+
+/* --- Basic Responsiveness (Mobile Devices) --- */
+@media (max-width: 768px) {
+    /* Adjust padding for smaller screens */
+    section, header, footer {
+        padding: 50px 5%;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    /* Note: A mobile navigation menu (hamburger icon) usually requires JavaScript to function fully. */
+}
